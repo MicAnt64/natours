@@ -43,6 +43,6 @@ block content
                             span.card__footer-value= tour.ratingsAverage
                             | 
                             span.card__footer-text= `rating (${tour.ratingsQuantity})`
-                        //- We want to query by their slug on not the id, since that makes the url cleaner
-                        //- starting url with slash is a relative url, it adds what we have to host name
+                        //- We want to query by their slug and not the id, since it makes the url cleaner.
+                        //- Starting url with slash is a relative url, it adds what we have to host name.
                         a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details

@@ -6608,9 +6608,9 @@ exports.displayMap = void 0;
 /* eslint-disable */
 // To disable ESLint for this file
 var displayMap = function displayMap(locations) {
-  // Do an ajax req to get data? we don't have to, since in tour
-  // template we have the tour data. So we expose the data in our pug fil
-  // Inthe future hide the token
+  // Do an ajax req to get data? we don't have to, since in our tour
+  // template we have the tour data. We just expose the data in our pug file
+  // Hide the token when we deploy
   mapboxgl.accessToken = 'pk.eyJ1IjoibWljaGFudCIsImEiOiJja2twaWR6MzAwOTBmMndwYXNzdXhyaDQyIn0.T0Socf_SzoSWQjuHovdq1g';
   var map = new mapboxgl.Map({
     container: 'map',
@@ -6619,7 +6619,7 @@ var displayMap = function displayMap(locations) {
     // zoom: 10,
     // interactive: false //fixed map
 
-  }); // Area tha will be displayed on map
+  }); // Area that will be displayed on map
 
   var bounds = new mapboxgl.LngLatBounds();
   locations.forEach(function (loc) {
@@ -8460,15 +8460,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.showAlert = exports.hideAlert = void 0;
 
 /* eslint-disable */
-// webpack is a module bundler, but is a pain to set up.
-// A better alt is parcel
 var hideAlert = function hideAlert() {
   var el = document.querySelector('.alert');
 
   if (el) {
     el.parentElement.removeChild(el);
   }
-}; // type is either success or error
+}; // Type is either success or error
 
 
 exports.hideAlert = hideAlert;
@@ -8521,8 +8519,8 @@ var login = /*#__PURE__*/function () {
             result = _context.sent;
 
             // To send data from html form to node application. There are 2 ways
-            // 1 - http request, 2)or use an html form
-            // response
+            // 1 - http request, 2) or use an html form
+            // Response
             //console.log(result.data);
             if (result.data.status === 'success') {
               (0, _alerts.showAlert)('success', 'Logged in successfully!'); // After 1.5 sec, load homepage
@@ -29947,8 +29945,8 @@ var bookTour = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             stripe = Stripe('pk_test_51IUMozEpGafBR2a06wDg1ekNpHn7r4IytXfU5Xt2W7FD17SKVn0FNwpjbbU0AuzXVXQP6DE80UTpqmIyGqVvPUTi00lUe0LBzQ'); //here we use the public key
-            // 1) Get the checkout session from the server (api) to send to the client
-            // we are only doing a get req , so we can just pass the url
+            // 1) Get the checkout session from the server (api) to send to the client.
+            // We are only doing a get req, so we can just pass the url
 
             _context.next = 4;
             return (0, _axios.default)("http://localhost:3000/api/v1/bookings/checkout-session/".concat(tourId));
@@ -30297,8 +30295,8 @@ if (userDataForm) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              // e is event, and we prevent the default which is submit form
-              // on submit click
+              // e is event, and we prevent the default which is to submit form
+              // on submit click button
               e.preventDefault();
               document.querySelector('.btn--save-settings').textContent = 'Updating...'; // We need to programatically recreate a multiform data
 
@@ -30306,8 +30304,6 @@ if (userDataForm) {
               form.append('name', document.getElementById('name').value);
               form.append('email', document.getElementById('email').value);
               form.append('photo', document.getElementById('photo').files[0]); // files is an array
-              //const name = document.getElementById('name').value;
-              //const email = document.getElementById('email').value;
               //updateSettings({ name, email }, 'data');
 
               _context.next = 8;
@@ -30339,8 +30335,6 @@ if (userPasswordForm) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              // e is event, and we prevent the default which is submit form
-              // on submit click
               e.preventDefault();
               document.querySelector('.btn--save-password').textContent = 'Updating...';
               passwordCurrent = document.getElementById('password-current').value;
@@ -30376,8 +30370,8 @@ if (userPasswordForm) {
 if (bookBtn) {
   bookBtn.addEventListener('click', function (e) {
     e.target.textContent = 'Processing...'; // e.target is the element that was clicked
-    //data-tour-id in pug/html will be converted to tourId (dash is converted to camel case. Data is dropped)
-    //const tourId = e.target.dataset.tourId;
+    // data-tour-id in pug/html will be converted to tourId (dash is converted to camel case. Data is dropped)
+    // const tourId = e.target.dataset.tourId;
     // above is equal to below, we can do this since var tourId is = to dataset.tourId
 
     var tourId = e.target.dataset.tourId;

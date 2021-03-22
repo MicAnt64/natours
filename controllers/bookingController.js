@@ -1,5 +1,5 @@
 // Stripe pkg only works in the backend, for the front end
-// is to include a script in the html in HEAD block
+// we include a script in the html in HEAD block
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Tour = require('../models/tourModel');
 const Booking = require('../models/bookingModel');
@@ -17,12 +17,12 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         success_url: `${req.protocol}://${req.get('host')}/?tour=${
             req.params.tourId
         }&user=${req.user.id}&price=${tour.price}`,
-        // after success, we want to register our booking in the db
-        // this is a temp soln since it is not secure. When it is
-        // deployed we will use stripe web hooks which is secured.
-        // Any one with url structure could call it w/o going through
-        // checkout process, they can book a tour w.o paying (it
-        // registers the booking without going through stripe)
+        // After success, we want to register our booking in the db.
+        // This is a temp solution since it is not secure. When it is
+        // deployed we will use stripe web hooks which is secure.
+        // Any one with our url structure could call it w/o going through
+        // checkout process - they can book a tour w.o paying (it
+        // registers the booking without going through stripe).
         // So we will temp put booking data in url as a query string
         cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
         customer_email: req.user.email,
@@ -35,7 +35,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
                 images: [
                     `https://www.natours.dev/img/tours/${tour.imageCover}`
                 ],
-                amount: tour.price * 100, // its in cents
+                amount: tour.price * 100, // it's in cents
                 currency: 'usd',
                 quantity: 1
             }
@@ -56,7 +56,7 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
     const { tour, user, price } = req.query;
 
     if (!tour || !user || !price) return next();
-    // So where is the next middleware? Well is the booking with stripe
+    // So where is the next middleware? Well, when the booking with stripe
     // is successful, we redirect the user to "/", so this is in a routes
     // file, which routes file? view routes. That is:
     // router.get('/', .....
@@ -67,7 +67,7 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
 
     // We could call next which would call isLoggedIn m.w. followed
     // by getOverview (renders the page). But remember that the url
-    // has additioanl data, so let/s redirect to the original url.
+    // has additioanl data, so let's redirect to the original url.
     //console.log('req: ', req);
     //console.log('req.orig: ', req.originalUrl);
     res.redirect(req.originalUrl.split('?')[0]);

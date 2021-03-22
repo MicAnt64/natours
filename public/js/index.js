@@ -1,7 +1,7 @@
 /* eslint-disable */
 // This file is to get data from UI and then get action from other modules
 // ie mapbox.js, login.js, alerts.js
-//console.log('Hello from Parcel');
+
 // We use {} since it is not a default export
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
@@ -41,8 +41,8 @@ if (logOutBtn) {
 
 if (userDataForm) {
     userDataForm.addEventListener('submit', async (e) => {
-        // e is event, and we prevent the default which is submit form
-        // on submit click
+        // e is event, and we prevent the default which is to submit form
+        // on submit click button
 
         e.preventDefault();
         document.querySelector('.btn--save-settings').textContent =
@@ -54,9 +54,6 @@ if (userDataForm) {
         form.append('email', document.getElementById('email').value);
         form.append('photo', document.getElementById('photo').files[0]);
         // files is an array
-
-        //const name = document.getElementById('name').value;
-        //const email = document.getElementById('email').value;
 
         //updateSettings({ name, email }, 'data');
         await updateSettings(form, 'data');
@@ -70,8 +67,6 @@ if (userDataForm) {
 
 if (userPasswordForm) {
     userPasswordForm.addEventListener('submit', async (e) => {
-        // e is event, and we prevent the default which is submit form
-        // on submit click
         e.preventDefault();
         document.querySelector('.btn--save-password').textContent =
             'Updating...';
@@ -99,8 +94,8 @@ if (bookBtn) {
     bookBtn.addEventListener('click', (e) => {
         e.target.textContent = 'Processing...';
         // e.target is the element that was clicked
-        //data-tour-id in pug/html will be converted to tourId (dash is converted to camel case. Data is dropped)
-        //const tourId = e.target.dataset.tourId;
+        // data-tour-id in pug/html will be converted to tourId (dash is converted to camel case. Data is dropped)
+        // const tourId = e.target.dataset.tourId;
         // above is equal to below, we can do this since var tourId is = to dataset.tourId
         const { tourId } = e.target.dataset;
         bookTour(tourId);

@@ -7,7 +7,7 @@ const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 
 // We commented this out since we will be saving
-// the file in memory so we can resize it
+// the file in memory so we can resize it.
 // const multerStorage = multer.diskStorage({
 //     //cb = callback
 //     destination: (req, file, cb) => {
@@ -42,14 +42,13 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
     //the img is in memory at req.file.buffer
-    // We want square images - it crops it
+    // We want square images - crop it
 
     // We need to set filename because other mW func calls it
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
     console.log('reqFile', req.file);
     console.log('reqFileFilename', req.file.filename);
-    //console.log('dodada', `${__dirname}/../public/img/users/${photo}`);
 
     await sharp(req.file.buffer)
         .resize(500, 500)
@@ -83,21 +82,8 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.getAllUsers = factory.getAll(User);
 
-// exports.getAllUsers = catchAsync(async (req, res, next) => {
-//     const users = await User.find();
-
-//     //Send response
-//     res.status(200).json({
-//         status: 'success',
-//         results: users.length,
-//         data: {
-//             users: users
-//         }
-//     });
-// });
-
 // GetMe endpoint so user can get his own data. We will use
-// the getOne factory function, only issue is getOne, used ID,
+// the getOne factory function. The only issue is getOne, uses ID,
 // from the parameter. But we want the ID from currently logged in
 // user, so we don't have to pass ID as a param.
 
@@ -107,8 +93,6 @@ exports.getMe = (req, res, next) => {
 };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-    //console.log(req.file);
-    //console.log(req.body);
     // 1) Create an error if the user tries to update the password (POST)
     if (req.body.password || req.body.passwordConfirm) {
         return next(
@@ -119,20 +103,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         );
     }
 
-    // 2) If not, just update the user document
-    // THis way will give us an error since it will expect all fields to be entered.
-    // In this case, if we just update the name, it will ask us to confirm pw
-    // So we will use findByIdAndUpdate instead of just findById.
-    //const user = await User.findById(req.user.id);
-    // 3rd arg is options, so we want the updated and not old info to be returned, and we
-    // want our validators to run. The 2nd arg (filteredBody) is used as opposed to req.body, since we
-    // dont want to update everything that is in the body. ie the user puts in the role,
-    // then that would allow the user to put in req.body.role = 'admin', and that would
-    // allow any user to change his role to admin. We also don't want someone to
-    // manipulate the dates when the passowrd was updated field. So we want filteredBody to only
-    // contain name and email and nothing else. So if user tries to change the role,
-    // we will filter it out!
-    // 2) FIlter out unwatned field names that are not allowed access to the user
+    // 2) FIlter out unwanted field names that are not allowed access to the user
     const filteredBody = filterObj(req.body, 'name', 'email');
     if (req.file) filteredBody.photo = req.file.filename;
 
@@ -166,12 +137,6 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getUser = factory.getOne(User);
-// exports.getUser = (req, res) => {
-//     res.status(500).json({
-//         status: 'error',
-//         message: 'This route is not yet defined.'
-//     });
-// };
 
 exports.createUser = (req, res) => {
     res.status(500).json({
@@ -180,21 +145,9 @@ exports.createUser = (req, res) => {
     });
 };
 
-//This only works for admin, do not attemp to update pw with this
+// This only works for admin, do not attemp to update pw with this.
 exports.updateUser = factory.updateOne(User);
-// exports.updateUser = (req, res) => {
-//     res.status(500).json({
-//         status: 'error',
-//         message: 'This route is not yet defined.'
-//     });
-// };
 
-//Only the admin shoudl be able to del the user
+// Only the admin should be able to delete the user
 // If the user does it, active is then set to false.
 exports.deleteUser = factory.deleteOne(User);
-// exports.deleteUser = (req, res) => {
-//     res.status(500).json({
-//         status: 'error',
-//         message: 'This route is not yet defined.'
-//     });
-// };

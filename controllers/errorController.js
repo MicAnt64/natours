@@ -7,7 +7,7 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateFieldsDB = (err) => {
-    // a regex goes between two /(here)/
+    // A regex goes between two /(here)/
     const value = err.message.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
     console.log(value);
     const message = `Duplicate field value: ${value}. Please use another value!`;
@@ -15,8 +15,8 @@ const handleDuplicateFieldsDB = (err) => {
 };
 
 const handleValidationErrorDB = (err) => {
-    // First we get the values: name, difficulty, ratingsAvg
-    // use map to loop and return error message
+    // First we get the values: name, difficulty, ratingsAvg.
+    // Use map to loop and return error message
     const errors = Object.values(err.errors).map((el) => el.message);
     const message = `Invalid input data. ${errors.join('. ')}`;
     return new AppError(message, 400);
@@ -62,7 +62,7 @@ const sendErrorProd = (err, req, res) => {
             });
         }
         // Send generic error for programming, unknown
-        // error. don't leak err details
+        // error. Don't leak error details
         // B)
         //1) Log error for us developers
         console.error('Error !!! :', err);
@@ -84,7 +84,7 @@ const sendErrorProd = (err, req, res) => {
         });
     }
     // Send generic error for programming, unknown
-    // error. don't leak err details
+    // error. don't leak error details
 
     //1) Log error for us developers
     console.error('Error !!! :', err);
@@ -100,18 +100,17 @@ module.exports = (err, req, res, next) => {
     // It will show us where the error happened
 
     err.statusCode = err.statusCode || 500;
-    // if def or internal status error
     err.status = err.status || 'error';
     err.message =
         err.message || 'Something went wrong! Please try again later.';
 
-    //Right now we are sending this msg to everyone
-    //whether we are in development or in production
-    //in production, we want to min error message to our client
-    // ie just send a nice human friendly message
-    // but in development, we want as much info as possible
+    // Right now we are sending this msg to everyone
+    // whether we are in development or in production
+    // in production, we want the min error message to our client.
+    // ie just send a nice human friendly message.
+    // But in development, we want as much info as possible.
     // we could log it to the console., but it would be
-    // useful to send it to postman
+    // useful to send it to postman.
     console.log('NODE ENV', process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'development') {
         console.log('developmenteeee');
@@ -119,7 +118,7 @@ module.exports = (err, req, res, next) => {
     } else if (process.env.NODE_ENV === 'production') {
         console.log('productioneeeee');
         // We create a hard copy since it is bad
-        // practice to modify the actual err
+        // practice to modify the actual err.
         console.log('err!!!', err);
         let error = Object.create(err);
         console.log('errror APPRERROR!!!', err.message);
@@ -127,7 +126,7 @@ module.exports = (err, req, res, next) => {
 
         // Operational errors checks - type of error
         // where the user makes a mistake - ie wrong email (no @) etc
-        // For cast Error (that is we use inproper ID in Get Tour)
+        // For cast Error (that is we use inproper ID in Get Tour).
         if (error.name === 'CastError') error = handleCastErrorDB(error);
         // For error in Update Create tour where we use identical tour name of existing one
         if (error.code === 11000) error = handleDuplicateFieldsDB(error);

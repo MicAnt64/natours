@@ -4,10 +4,9 @@ import axios from 'axios';
 import { showAlert } from './alerts';
 
 // UpdateData
-
 // Type is either password or data
 export const updateSettings = async (data, type) => {
-    // USe try catch block so we can handle errors
+    // Use try catch block so we can handle errors
 
     try {
         const url =

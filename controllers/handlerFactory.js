@@ -3,7 +3,7 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
 // The goal is to create a func that return a func
-// with a similar format to the one below, we generalize
+// with a similar format to the one below. We generalize
 // not only to Tours, but Users and Reviews as well
 
 exports.deleteOne = (Model) =>
@@ -54,22 +54,11 @@ exports.createOne = (Model) =>
 exports.getOne = (Model, populateOptions) =>
     catchAsync(async (req, res, next) => {
         //console.log(req.params);
-        // The populate added at the end is the grab object ids (child refs)
-        // and populate the data, the - in the select fields removes indicated
-        // fields
-        //const tour = await Tour.findById(req.params.id);
+        // The populate added at the end is to grab object ids (child refs)
 
         let query = Model.findById(req.params.id);
         if (populateOptions) query = query.populate(populateOptions);
         const doc = await query;
-        //const doc = await Model.findById(req.params.id).populate('reviews');
-
-        //Since we need to do this again for getAllTours,
-        // We will create query middleware in our tour models
-        //.populate({
-        //    path: 'guides',
-        //    select: '-__v -passwordChangedAt'
-        //});
 
         if (!doc) {
             return next(new AppError('No doc found with that ID', 404));
@@ -87,7 +76,7 @@ exports.getAll = (Model) =>
     catchAsync(async (req, res, next) => {
         // To allow for nested GET reviews on tour (hacky)
         let filter = {};
-        // this is we want 1 particular review
+        // this is when we want 1 particular review
         if (req.params.tourId) filter = { tour: req.params.tourId };
 
         const features = new APIFeatures(Model.find(filter), req.query)
@@ -97,8 +86,8 @@ exports.getAll = (Model) =>
             .paginate();
         //console.log(features);
         //console.log(features.query);
-        // set out own indexes on fields that are queried often
-        // to make reading quicker
+        // set our own indexes on fields that are queried often
+        // to make reading quicker.
         //const doc = await features.query.explain();
         const doc = await features.query;
 

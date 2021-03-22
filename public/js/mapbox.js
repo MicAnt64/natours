@@ -2,10 +2,10 @@
 // To disable ESLint for this file
 
 export const displayMap = (locations) => {
-    // Do an ajax req to get data? we don't have to, since in tour
-    // template we have the tour data. So we expose the data in our pug fil
+    // Do an ajax req to get data? we don't have to, since in our tour
+    // template we have the tour data. We just expose the data in our pug file
 
-    // Inthe future hide the token
+    // Hide the token when we deploy
     mapboxgl.accessToken =
         'pk.eyJ1IjoibWljaGFudCIsImEiOiJja2twaWR6MzAwOTBmMndwYXNzdXhyaDQyIn0.T0Socf_SzoSWQjuHovdq1g';
 
@@ -18,7 +18,7 @@ export const displayMap = (locations) => {
         // interactive: false //fixed map
     });
 
-    // Area tha will be displayed on map
+    // Area that will be displayed on map
     const bounds = new mapboxgl.LngLatBounds();
 
     locations.forEach((loc) => {

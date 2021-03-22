@@ -6,7 +6,7 @@ export const login = async (email, password) => {
     //console.log(email, password); dont put sensitive data to the console
     // Async/await is for modern browsers.
     // Axios will throw error based on response code, so we can use try catch blocks
-    //To make http, we are going to use a popular lib called axios
+    // To make http, we are going to use a popular lib called axios
     try {
         const result = await axios({
             method: 'POST',
@@ -18,9 +18,9 @@ export const login = async (email, password) => {
         });
 
         // To send data from html form to node application. There are 2 ways
-        // 1 - http request, 2)or use an html form
+        // 1 - http request, 2) or use an html form
 
-        // response
+        // Response
         //console.log(result.data);
         if (result.data.status === 'success') {
             showAlert('success', 'Logged in successfully!');

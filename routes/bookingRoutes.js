@@ -4,8 +4,9 @@ const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
-// For this we wont follow REST principle since this wont be using CRUD
-// it only serves for the client to get a checkout session
+// For this, controllers for booking route, we won't follow REST principles
+//  since this wont be using CRUD operations. It only serves for the client
+// to get a checkout session.
 
 router.use(authController.protect);
 // We can test this using postman, but later on we don't want to allow this.

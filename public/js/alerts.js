@@ -1,8 +1,5 @@
 /* eslint-disable */
 
-// webpack is a module bundler, but is a pain to set up.
-// A better alt is parcel
-
 export const hideAlert = () => {
     const el = document.querySelector('.alert');
     if (el) {
@@ -10,7 +7,7 @@ export const hideAlert = () => {
     }
 };
 
-// type is either success or error
+// Type is either success or error
 export const showAlert = (type, msg) => {
     hideAlert();
 

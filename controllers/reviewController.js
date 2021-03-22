@@ -1,24 +1,7 @@
 const Review = require('../models/reviewModel');
-//const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 
 exports.getAllReviews = factory.getAll(Review);
-// exports.getAllReviews = catchAsync(async (req, res, next) => {
-//     let filter = {};
-
-//     // this is we want 1 particular review
-//     if (req.params.tourId) filter = { tour: req.params.tourId };
-
-//     const reviews = await Review.find(filter);
-
-//     res.status(200).json({
-//         status: 'success',
-//         results: reviews.length,
-//         data: {
-//             reviews: reviews
-//         }
-//     });
-// });
 
 exports.seTourUserIds = (req, res, next) => {
     if (!req.body.tour) req.body.tour = req.params.tourId;
@@ -27,28 +10,6 @@ exports.seTourUserIds = (req, res, next) => {
 };
 
 exports.createReview = factory.createOne(Review);
-// exports.createReview = catchAsync(async (req, res, next) => {
-//     // Both lines below allow for nested routes.
-//     // This allows us to define tour and user, when
-//     // they are not in the request . body
-//     // if we didn't specify the tour id in the body,
-//     // then we defne it as the one in the url
-//     ////if (!req.body.tour) req.body.tour = req.params.tourId;
-//     // We get req.user from the protect middleware
-//     ////if (!req.body.user) req.body.user = req.user.id;
-
-//     const newReview = await Review.create(req.body);
-//     // If there are additional fields in req.body,
-//     // that are not part of the schema, they will be ignored.
-
-//     res.status(201).json({
-//         status: 'success',
-//         data: {
-//             review: newReview
-//         }
-//     });
-// });
-
 exports.getReview = factory.getOne(Review);
 exports.updateReview = factory.updateOne(Review);
 exports.deleteReview = factory.deleteOne(Review);

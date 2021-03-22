@@ -34,9 +34,9 @@ const reviews = JSON.parse(
 const importData = async () => {
     try {
         // Tour model has create method that takes in
-        // a object (document), or array of objects
+        // an object (document), or array of objects.
         // We will turn off the password confirm validation
-        // just for prepop the users collection. We also
+        // just for prepopulate the users collection. We also
         // need to temp comment out password encryption,
         // since they are already encrypted.
         await Tour.create(tours);
