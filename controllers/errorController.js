@@ -9,7 +9,7 @@ const handleCastErrorDB = (err) => {
 const handleDuplicateFieldsDB = (err) => {
     // A regex goes between two /(here)/
     const value = err.message.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
-    console.log(value);
+    //console.log(value);
     const message = `Duplicate field value: ${value}. Please use another value!`;
     return new AppError(message, 400);
 };
@@ -77,7 +77,7 @@ const sendErrorProd = (err, req, res) => {
     //console.log('is OP', err.isOperational);
     // eslint-disable-next-line no-lonely-if
     if (err.isOperational) {
-        console.log(err);
+        //console.log(err);
         return res.status(err.statusCode).render('error', {
             title: 'Something went wrong PROD!',
             msg: err.message
@@ -111,17 +111,15 @@ module.exports = (err, req, res, next) => {
     // But in development, we want as much info as possible.
     // we could log it to the console., but it would be
     // useful to send it to postman.
-    console.log('NODE ENV', process.env.NODE_ENV);
+    console.log('NODE ENV: ', process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'development') {
-        console.log('developmenteeee');
+        console.log('Development Env.');
         sendErrorDev(err, req, res);
     } else if (process.env.NODE_ENV === 'production') {
-        console.log('productioneeeee');
+        console.log('Production Env.');
         // We create a hard copy since it is bad
         // practice to modify the actual err.
-        console.log('err!!!', err);
         let error = Object.create(err);
-        console.log('errror APPRERROR!!!', err.message);
         //error.message = err.message;
 
         // Operational errors checks - type of error
@@ -131,7 +129,7 @@ module.exports = (err, req, res, next) => {
         // For error in Update Create tour where we use identical tour name of existing one
         if (error.code === 11000) error = handleDuplicateFieldsDB(error);
         // Validation error - when updating a tour
-        console.log('err type:::', error.name);
+        // console.log('err type:::', error.name);
         if (error.name === 'ValidationError') {
             error = handleValidationErrorDB(error);
         }

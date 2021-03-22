@@ -236,12 +236,12 @@ tourSchema.pre(/^find/, function (next) {
     next();
 });
 
-// Here we now get access to docs returned from the query
-tourSchema.post(/^find/, function (docs, next) {
-    console.log(`Query took ${Date.now() - this.start} ms!`);
-    //console.log(docs);
-    next();
-});
+// Here we now get access to docs returned from the query. Test post find mw.
+// tourSchema.post(/^find/, function (docs, next) {
+//     console.log(`Query took ${Date.now() - this.start} ms!`);
+//     //console.log(docs);
+//     next();
+// });
 
 // AGGREGATION MIDDLEWARE
 // It allows us to add hooks before or after an
@@ -259,7 +259,7 @@ tourSchema.pre('aggregate', function (next) {
     }
     // Having match here interferes with geoNear in tourController file
     // since geonear needs to be 1st
-    console.log(this.pipeline());
+    //console.log(this.pipeline());
     next();
 });
 

@@ -10,6 +10,7 @@ const hpp = require('hpp');
 // middleware from pkg: cookie-parser.
 // We use this cookie to protect our routes
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 //const { Router } = require('express');
 
 const AppError = require('./utils/appError');
@@ -167,6 +168,9 @@ app.use(
         ]
     })
 );
+
+// Compresses TEXT returned to client.
+app.use(compression());
 
 // TEST/DEV MIDDLEWARE (seful to take look at headers)
 app.use((req, res, next) => {

@@ -10,6 +10,7 @@ export const login = async (email, password) => {
     try {
         const result = await axios({
             method: 'POST',
+            // Relative url is fine since api and website will be hosted on the same server.
             url: '/api/v1/users/login',
             data: {
                 email: email,

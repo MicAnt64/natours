@@ -47,8 +47,8 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     // We need to set filename because other mW func calls it
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-    console.log('reqFile', req.file);
-    console.log('reqFileFilename', req.file.filename);
+    //console.log('reqFile', req.file);
+    //console.log('reqFileFilename', req.file.filename);
 
     await sharp(req.file.buffer)
         .resize(500, 500)
