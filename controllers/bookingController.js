@@ -93,10 +93,11 @@ const createBookingCheckout = async (session) => {
 };
 
 exports.webhookCheckout = (req, res, next) => {
+    console.log('webhook checkout called');
     // This code will run when a payment is successful. (Stripe will call webhook which then
     // calls this func)
     // 1) Read Stripe signature from headers
-    const signature = req.headers['stipe-signature'];
+    const signature = req.headers['stripe-signature'];
     console.log('Signa', signature);
     // 2) Create a Stripe event (body will be in raw form)
     let event;
