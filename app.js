@@ -11,6 +11,7 @@ const hpp = require('hpp');
 // We use this cookie to protect our routes
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 //const { Router } = require('express');
 
 const AppError = require('./utils/appError');
@@ -27,6 +28,25 @@ const app = express();
 app.enable('trust proxy');
 
 app.set('view engine', 'pug');
+
+// Implement CORS
+// Allows other browsers to access resources on our API
+// It adds specific headers...
+// If you only want to add cors to a specific route (ie reviews), we then use...
+// app.use('/api/v1/reviews', cors(), reviewRouter);
+// Now what is we want our app to be on one domain or subdomain, and our
+// api and another domain or subdomain? (ie api.natours.com and natours.com)
+// we the do app.use(cors({ origin: 'https://www.natours.com'}));
+// This below will only work for simple req (get and post). Non simple req (put, patch,
+// delete, and also req that use cookies or non standard headers). These types of req
+// require a pre-flight phase.
+app.use(cors());
+
+// Pre-flight phase for non-simple req.
+// Arg 1 - route for which we want to handle options, 2 - is handler.
+app.options('*', cors());
+//app.options('/api/tours/:id', cors())
+
 // Define where views are located
 // app.set('views', './views'); not ideal, since the path is always
 // relative from DIR where we launch app. In our case, it's the root dir
