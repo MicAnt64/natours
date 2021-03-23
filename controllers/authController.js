@@ -13,7 +13,7 @@ const signToken = (userId) => {
     });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
 
     const cookieOptions = {
@@ -32,7 +32,17 @@ const createSendToken = (user, statusCode, res) => {
     // httpOnly, is so the cookie cannot be accessed or modified in any
     // way by the browser. This prevents cross site scripting attacks (XSS).
     // We activate the secure true when we go into production.
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    // Not all application will be automatically set to https, so
+    // we need to change condition below...
+    //if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    // In express, we have a secure property, but with heroku, this won't
+    // work since heroku's uses proxy's which redirects or modifies
+    // incoming req to app before they actually reach the app. To make
+    // this work in heroku, we need to test if the x-forward-proto header
+    // is set to https.
+    // We also need to let our app trust proxies. We doo this in app.js
+    if (req.secure || req.headers('x-forwarded-proto') === 'https')
+        cookieOptions.secure = true;
 
     res.cookie('jwt', token, cookieOptions);
 
@@ -75,7 +85,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     // The payload is: 1 - mongodb id, secret string (keep it
     // in config.env file), standard is to make secret 32 chars long.
     // pass in options (when jwt expires) see config.env.
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -103,7 +113,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
 
     // 3) if all is ok, send token to client
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });
 
 exports.logout = (req, res) => {
@@ -320,7 +330,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     await user.save();
     // 3. Update the changedPasswordAt property for user
     // 4. Log the user in, send the JWT to the client.
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -348,5 +358,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     // MIDDLEWARES WON'T WORK, SO THE PW WON'T BE ENCRYPTED, AND
     // THE CHANGED_AT WON'T WORK.
     // 4) Log user in, send JWT
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });

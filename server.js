@@ -60,3 +60,19 @@ process.on('unhandledRejection', (err) => {
         process.exit(1);
     });
 });
+
+// Another Heroku specific config, which is to respond to a SIGTERM signal
+// which heroku emits for time to time. A dyno is a container, which the app
+// is running, and it restarts every 24 hrs in order to keep app in a healthy
+// state. It does this by sending a SIGTERM signal to app, which shuts down the
+// app. Sometimes this shut down is abrupt and it leaves req being processed
+// hanging in the air (this happens also with an unhandled rejection).
+// Files modified: app.js (enabled proxy trusting), authController.js (enabled
+// checking header for x-forwarder-proto) and server.js (below)
+process.on('SIGTERM', () => {
+    console.log('SIGTERM RECEIVED. Shutting down gracefully.');
+    // Allows server to shutdown gracefully by allowing pending req to process until the end
+    server.close(() => {
+        console.log('Process terminated.');
+    });
+});

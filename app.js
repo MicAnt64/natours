@@ -24,6 +24,8 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+app.enable('trust proxy');
+
 app.set('view engine', 'pug');
 // Define where views are located
 // app.set('views', './views'); not ideal, since the path is always
