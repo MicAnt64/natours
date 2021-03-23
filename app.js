@@ -21,6 +21,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -147,6 +148,17 @@ const limiter = rateLimit({
 
 // The rate limiter will affect all routes that start with the url: /api
 app.use('/api', limiter);
+
+// Stripe Webhook
+// We define this route in app.js instead of in the booking router
+// because when we receive the body from stripe, in the hanlder function
+// we will need to use the body as a raw form and not as json for it to work.
+// see line containing -> app.use(express.json({ limit: '10kb' }));
+app.post(
+    '/webhook-checkout',
+    express.raw({ type: 'application/json' }),
+    bookingController.webhookCheckout
+);
 
 // BODY PARSER, READING DATA FROM THE BODY INTO REQ.BODY
 // We will limit how much data can be sent in the body to prevent evil regex (DOS)
