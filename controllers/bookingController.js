@@ -22,7 +22,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         // success_url: `${req.protocol}://${req.get('host')}/?tour=${
         //     req.params.tourId
         // }&user=${req.user.id}&price=${tour.price}`,
-        success_url: `${req.protocol}://${req.get('host')}/my-tours`,
+        success_url: `${req.protocol}://${req.get(
+            'host'
+        )}/my-tours?alert=booking`,
 
         // After success, we want to register our booking in the db.
         // This is a temp solution since it is not secure. When it is
