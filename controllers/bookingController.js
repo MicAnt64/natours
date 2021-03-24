@@ -135,7 +135,11 @@ exports.webhookCheckout = (req, res, next) => {
 
     if (event.type === 'checkout.session.completed') {
         // Then use event to create a booking in our DB
-        createBookingCheckout(event.data.object);
+        try {
+            createBookingCheckout(event.data.object);
+        } catch (err) {
+            console.log('cbc error: ', err);
+        }
     }
 
     res.status(200).json({ received: true });
