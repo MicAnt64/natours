@@ -10,7 +10,7 @@ const factory = require('./handlerFactory');
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // 1) Get the currently booked tour
     const tour = await Tour.findById(req.params.tourId);
-    console.log('Tour: ', tour);
+
     // 2) Create the checkout sessions
 
     const session = await stripe.checkout.sessions.create({
@@ -68,7 +68,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
             }
         ]
     });
-    console.log('Session: ', session);
 
     // 3) Create session as a response (send it to client)
     res.status(200).json({
@@ -103,10 +102,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 // });
 
 const createBookingCheckout = async (session) => {
-    console.log('Session 2: ', session);
-    console.log('Session client ref Id: ', session.client_reference_id);
-    console.log('Session customer email: ', session.customer_email);
-    console.log('Session line items(price): ', session.amount_total);
     const tour = session.client_reference_id;
     const user = (await User.findOne({ email: session.customer_email })).id;
     const price = session.amount_total / 100; //session.display_items[0].amount / 100;
@@ -114,12 +109,10 @@ const createBookingCheckout = async (session) => {
 };
 
 exports.webhookCheckout = (req, res, next) => {
-    console.log('webhook checkout called');
     // This code will run when a payment is successful. (Stripe will call webhook which then
     // calls this func)
     // 1) Read Stripe signature from headers
     const signature = req.headers['stripe-signature'];
-    console.log('Signa', signature);
     // 2) Create a Stripe event (body will be in raw form)
     let event;
     try {
@@ -128,7 +121,6 @@ exports.webhookCheckout = (req, res, next) => {
             signature,
             process.env.STRIPE_WEBHOOKS_SECRET
         );
-        console.log('Event: ', event);
     } catch (err) {
         return res.status(400).send(`Webhook error: ${err.message}`);
     }
@@ -138,7 +130,7 @@ exports.webhookCheckout = (req, res, next) => {
         try {
             createBookingCheckout(event.data.object);
         } catch (err) {
-            console.log('cbc error: ', err);
+            console.log(err);
         }
     }
 
