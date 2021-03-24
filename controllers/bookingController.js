@@ -39,7 +39,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
                 description: tour.summary,
                 // imgs will only upload once app is deployed to web
                 images: [
-                    `https://www.natours.dev/img/tours/${tour.imageCover}`
+                    `${req.protocol}://${req.get('host')}/img/tours/${
+                        tour.imageCover
+                    }`
                 ],
                 amount: tour.price * 100, // it's in cents
                 currency: 'usd',
@@ -88,7 +90,7 @@ const createBookingCheckout = async (session) => {
     console.log('Session line items(price): ', session.line_items[0]);
     const tour = session.client_reference_id;
     const user = (await User.findOne({ email: session.customer_email })).id;
-    const price = session.line_items[0].amount / 100;
+    const price = session.display_items[0].amount / 100;
     await Booking.create({ tour, user, price });
 };
 
