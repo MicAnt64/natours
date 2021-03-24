@@ -106,7 +106,7 @@ const createBookingCheckout = async (session) => {
     console.log('Session 2: ', session);
     console.log('Session client ref Id: ', session.client_reference_id);
     console.log('Session customer email: ', session.customer_email);
-    console.log('Session line items(price): ', session.line_items[0]);
+    console.log('Session line items(price): ', session.amount_total);
     const tour = session.client_reference_id;
     const user = (await User.findOne({ email: session.customer_email })).id;
     const price = session.amount_total / 100; //session.display_items[0].amount / 100;
