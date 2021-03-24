@@ -10,6 +10,7 @@ const hpp = require('hpp');
 // middleware from pkg: cookie-parser.
 // We use this cookie to protect our routes
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const compression = require('compression');
 const cors = require('cors');
 //const { Router } = require('express');
@@ -156,7 +157,8 @@ app.use('/api', limiter);
 // see line containing -> app.use(express.json({ limit: '10kb' }));
 app.post(
     '/webhook-checkout',
-    express.raw({ type: 'application/json' }),
+    //express.raw({ type: 'application/json' }),
+    bodyParser.raw({ type: 'application/json' }),
     bookingController.webhookCheckout
 );
 
