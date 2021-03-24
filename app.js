@@ -157,7 +157,6 @@ app.use('/api', limiter);
 // see line containing -> app.use(express.json({ limit: '10kb' }));
 app.post(
     '/webhook-checkout',
-    console.log('TRTR'),
     //express.raw({ type: 'application/json' }),
     bodyParser.raw({ type: 'application/json' }),
     bookingController.webhookCheckout
